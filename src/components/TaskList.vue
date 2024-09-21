@@ -24,19 +24,14 @@
       </ul>
     </div>
 
-    <div v-if="isModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <!-- Conteúdo do modal -->
+    <div v-if="isModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"> <!-- v-if controla se o modal aparece (se for true, mostra o modal) -->
       <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
         <h2 class="text-xl font-bold mb-4">Edit Task</h2>
-
-        <!-- Input para editar a tarefa, vinculado ao valor da task selecionada -->
         <input 
           type="text" 
           v-model="editedTaskText" 
           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-300"
         />
-
-        <!-- Botões de Cancelar e Salvar -->
         <div class="mt-4 flex justify-end">
           <button @click="closeModal" class="px-4 py-2 bg-gray-300 text-black rounded-lg mr-2">Cancel</button>
           <button @click="saveEditedTask" class="px-4 py-2 bg-blue-500 text-white rounded-lg">Save</button>
@@ -60,7 +55,7 @@
         newTask: '',
         tasks: [], 
         isModalOpen: false,  // modal control
-        editedTaskIndex: null,  
+        editedTaskIndex: null,  // save task index
         editedTaskText: ''  // edited task text
       }
     },
@@ -78,9 +73,9 @@
         this.tasks[index].completed = !this.tasks[index].completed;
       },
       openEditModal(index) {
-        this.editedTaskIndex = index;
-        this.editedTaskText = this.tasks[index].text;
-        this.isModalOpen = true;
+        this.editedTaskIndex = index; 
+        this.editedTaskText = this.tasks[index].text; // nome da task
+        this.isModalOpen = true; // set true pra mostrar o modal
       },
       closeModal() {
         this.isModalOpen = false;
