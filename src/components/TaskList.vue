@@ -19,9 +19,31 @@
           :task="task"
           @removeTask="removeTask(index)"
           @changeStatus="changeStatus(index)"
+          @editTask="openEditModal(index)"
         />  
       </ul>
     </div>
+
+    <div v-if="isModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+      <!-- Conteúdo do modal -->
+      <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+        <h2 class="text-xl font-bold mb-4">Edit Task</h2>
+
+        <!-- Input para editar a tarefa, vinculado ao valor da task selecionada -->
+        <input 
+          type="text" 
+          v-model="editedTaskText" 
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+        />
+
+        <!-- Botões de Cancelar e Salvar -->
+        <div class="mt-4 flex justify-end">
+          <button @click="closeModal" class="px-4 py-2 bg-gray-300 text-black rounded-lg mr-2">Cancel</button>
+          <button @click="saveEditedTask" class="px-4 py-2 bg-blue-500 text-white rounded-lg">Save</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -36,7 +58,10 @@
     data() {
       return {
         newTask: '',
-        tasks: []
+        tasks: [], 
+        isModalOpen: false,  // modal control
+        editedTaskIndex: null,  
+        editedTaskText: ''  // edited task text
       }
     },
     methods: {
@@ -51,6 +76,22 @@
       },
       changeStatus(index) {
         this.tasks[index].completed = !this.tasks[index].completed;
+      },
+      openEditModal(index) {
+        this.editedTaskIndex = index;
+        this.editedTaskText = this.tasks[index].text;
+        this.isModalOpen = true;
+      },
+      closeModal() {
+        this.isModalOpen = false;
+        this.editedTaskIndex = null;
+        this.editedTaskText = '';
+      },
+      saveEditedTask() {
+        if (this.editedTaskText.trim() !== '') {
+          this.tasks[this.editedTaskIndex].text = this.editedTaskText;  
+          this.closeModal();  
+        }
       }
     }
   };
